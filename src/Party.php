@@ -7,6 +7,7 @@ use Sabre\Xml\XmlSerializable;
 
 class Party implements XmlSerializable
 {
+    private $endpoint;
     private $name;
     private $partyIdentificationId;
     private $postalAddress;
@@ -14,6 +15,24 @@ class Party implements XmlSerializable
     private $contact;
     private $partyTaxScheme;
     private $legalEntity;
+
+    /**
+     * @return string
+     */
+    public function getEndpointID(): ?string
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * @param string $endpoint
+     * @return Party
+     */
+    public function setEndpointID(?string $endpoint): Party
+    {
+        $this->endpoint = $endpoint;
+        return $this;
+    }
 
     /**
      * @return string
@@ -149,6 +168,16 @@ class Party implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'EndpointID',
+                'value' => $this->endpoint,
+                'attributes' => [
+                    'schemeID' => '9948'
+                ]
+            ],
+        ]);
+
         if ($this->partyIdentificationId !== null) {
             $writer->write([
                 Schema::CAC . 'PartyIdentification' => [

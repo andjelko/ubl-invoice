@@ -593,15 +593,15 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        if ($this->contractDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC . 'ContractDocumentReference' => $this->contractDocumentReference,
-            ]);
-        }
-
         if ($this->invoicePeriod != null) {
             $writer->write([
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+
+        if ($this->contractDocumentReference !== null) {
+            $writer->write([
+                Schema::CAC . 'ContractDocumentReference' => $this->contractDocumentReference,
             ]);
         }
 

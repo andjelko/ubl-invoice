@@ -11,6 +11,7 @@ class InvoicePeriod implements XmlSerializable
 {
     private $startDate;
     private $endDate;
+    private $descriptionCode;
 
     /**
      * @return DateTime
@@ -49,6 +50,24 @@ class InvoicePeriod implements XmlSerializable
     }
 
     /**
+     * @return integer
+     */
+    public function getDescriptionCode(): int
+    {
+        return $this->descriptionCode;
+    }
+
+    /**
+     * @param integer $descriptionCode
+     * @return InvoicePeriod
+     */
+    public function setDescriptionCode(int $descriptionCode): InvoicePeriod
+    {
+        $this->descriptionCode = $descriptionCode;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -56,6 +75,8 @@ class InvoicePeriod implements XmlSerializable
      */
     public function validate()
     {
+        if($this->descriptionCode) return;
+
         if ($this->startDate === null && $this->endDate === null) {
             throw new InvalidArgumentException('Missing startDate or endDate');
         }
@@ -79,6 +100,11 @@ class InvoicePeriod implements XmlSerializable
         if ($this->endDate != null) {
             $writer->write([
                 Schema::CBC . 'EndDate' => $this->endDate->format('Y-m-d'),
+            ]);
+        }
+        if ($this->descriptionCode != null) {
+            $writer->write([
+                Schema::CBC . 'DescriptionCode' => $this->descriptionCode,
             ]);
         }
     }
