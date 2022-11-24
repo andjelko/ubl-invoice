@@ -1,6 +1,6 @@
 {
-    "name": "num-num/ubl-invoice",
-    "description": "A modern object-oriented PHP library to create valid UBL files",
+    "name": "andjelko/ubl-invoice",
+    "description": "A modern object-oriented PHP library to create valid UBL files updated for SEF usage",
     "keywords": [
         "ubl",
         "invoice",
@@ -19,6 +19,10 @@
             "name": "Bert Devriese",
             "email": "bert@numnum.be",
             "homepage": "https://www.numnum.be",
+            "role": "Developer"
+        },
+        {
+            "name": "Milos Andjelkovic",
             "role": "Developer"
         }
     ],
