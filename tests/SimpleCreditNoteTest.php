@@ -2,6 +2,9 @@
 
 namespace NumNum\UBL\Tests;
 
+use NumNum\UBL\BillingReference;
+use NumNum\UBL\ContractDocumentReference;
+use NumNum\UBL\InvoiceTypeCode;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -9,11 +12,12 @@ use PHPUnit\Framework\TestCase;
  */
 class SimpleCreditNoteTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
     {
+        $invoiceType = InvoiceTypeCode::CREDIT_NOTE;
         // Address country
         $country = (new \NumNum\UBL\Country())
             ->setIdentificationCode('BE');
@@ -68,7 +72,8 @@ class SimpleCreditNoteTest extends TestCase
             ->setItem($productItem)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setInvoiceTypeCode($invoiceType);
 
         $invoiceLines = [$invoiceLine];
 
@@ -88,6 +93,11 @@ class SimpleCreditNoteTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
+        $billingReference = (new BillingReference())
+            ->setId('123/test');
+
+        $contractDocumentReference = (new ContractDocumentReference())
+            ->setId('555/test');
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
@@ -98,7 +108,9 @@ class SimpleCreditNoteTest extends TestCase
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
-            ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::CREDIT_NOTE);
+            ->setBillingReference($billingReference)
+            ->setContractDocumentReference($contractDocumentReference)
+            ->setInvoiceTypeCode($invoiceType);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string

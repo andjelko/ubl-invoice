@@ -33,6 +33,7 @@ class Invoice implements XmlSerializable
     private $buyerReference;
     private $accountingCostCode;
     private $invoicePeriod;
+    private $billingReference;
     private $delivery;
     private $orderReference;
     private $contractDocumentReference;
@@ -438,6 +439,24 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @return BillingReference
+     */
+    public function getBillingReference(): ?BillingReference
+    {
+        return $this->billingReference;
+    }
+
+    /**
+     * @param BillingReference $billingReference
+     * @return Invoice
+     */
+    public function setBillingReference(BillingReference $billingReference): Invoice
+    {
+        $this->billingReference = $billingReference;
+        return $this;
+    }
+
+    /**
      * @return Delivery
      */
     public function getDelivery(): ?Delivery
@@ -560,8 +579,13 @@ class Invoice implements XmlSerializable
         }
 
         if ($this->invoiceTypeCode !== null) {
+            if($this->invoiceTypeCode == InvoiceTypeCode::CREDIT_NOTE)
+                $type_code = Schema::CBC . 'CreditNoteTypeCode';
+            else
+                $type_code = Schema::CBC . 'InvoiceTypeCode';
+
             $writer->write([
-                Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode
+                $type_code => $this->invoiceTypeCode
             ]);
         }
 
@@ -596,6 +620,12 @@ class Invoice implements XmlSerializable
         if ($this->invoicePeriod != null) {
             $writer->write([
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+
+        if ($this->billingReference != null) {
+            $writer->write([
+                Schema::CAC . 'BillingReference' => $this->billingReference
             ]);
         }
 
@@ -670,8 +700,13 @@ class Invoice implements XmlSerializable
         ]);
 
         foreach ($this->invoiceLines as $invoiceLine) {
+            if($this->invoiceTypeCode == InvoiceTypeCode::CREDIT_NOTE)
+                $line_code = Schema::CAC . 'CreditNoteLine';
+            else
+                $line_code = Schema::CAC . 'InvoiceLine';
+
             $writer->write([
-                Schema::CAC . 'InvoiceLine' => $invoiceLine
+                $line_code => $invoiceLine
             ]);
         }
     }

@@ -8,6 +8,7 @@ use Sabre\Xml\XmlSerializable;
 class InvoiceLine implements XmlSerializable
 {
     private $id;
+    private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $invoicedQuantity;
     private $lineExtensionAmount;
     private $unitCode = 'MON';
@@ -52,6 +53,25 @@ class InvoiceLine implements XmlSerializable
     public function setInvoicedQuantity(?float $invoicedQuantity): InvoiceLine
     {
         $this->invoicedQuantity = $invoicedQuantity;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceTypeCode(): ?string
+    {
+        return $this->invoiceTypeCode;
+    }
+
+    /**
+     * @param string $invoiceTypeCode
+     * See also: src/InvoiceTypeCode.php
+     * @return InvoiceLine
+     */
+    public function setInvoiceTypeCode(string $invoiceTypeCode): InvoiceLine
+    {
+        $this->invoiceTypeCode = $invoiceTypeCode;
         return $this;
     }
 
@@ -233,10 +253,14 @@ class InvoiceLine implements XmlSerializable
                 Schema::CBC . 'Note' => $this->getNote()
             ]);
         }
+        if($this->invoiceTypeCode == InvoiceTypeCode::CREDIT_NOTE)
+            $name = Schema::CBC . 'CreditedQuantity';
+        else
+            $name = Schema::CBC . 'InvoicedQuantity';
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'InvoicedQuantity',
+                'name' => $name,
                 'value' => number_format($this->invoicedQuantity, 2, '.', ''),
                 'attributes' => [
                     'unitCode' => $this->unitCode
@@ -250,6 +274,7 @@ class InvoiceLine implements XmlSerializable
                 ]
             ]
         ]);
+
         if ($this->accountingCostCode !== null) {
             $writer->write([
                 Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
