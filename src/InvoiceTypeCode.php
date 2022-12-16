@@ -9,6 +9,8 @@ namespace NumNum\UBL;
 class InvoiceTypeCode
 {
     const INVOICE = 380;
+    const DEBIT_NOTE = 383;
+    const ADVANCE_INVOICE = 389;
     const CORRECTED_INVOICE = 384;
     const SELF_BILLING_INVOICE = 389;
     const CREDIT_NOTE = 381;
