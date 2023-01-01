@@ -75,7 +75,7 @@ class InvoicePeriod implements XmlSerializable
      */
     public function validate()
     {
-        if($this->descriptionCode) return;
+        if($this->descriptionCode !== null) return;
 
         if ($this->startDate === null && $this->endDate === null) {
             throw new InvalidArgumentException('Missing startDate or endDate');
@@ -102,7 +102,7 @@ class InvoicePeriod implements XmlSerializable
                 Schema::CBC . 'EndDate' => $this->endDate->format('Y-m-d'),
             ]);
         }
-        if ($this->descriptionCode != null) {
+        if ($this->descriptionCode !== null) {
             $writer->write([
                 Schema::CBC . 'DescriptionCode' => $this->descriptionCode,
             ]);
