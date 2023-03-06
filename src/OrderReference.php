@@ -4,11 +4,13 @@ namespace NumNum\UBL;
 
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
+use DateTime;
 
 class OrderReference implements XmlSerializable
 {
     private $id;
     private $salesOrderId;
+    private $issueDate;
 
     /**
      * @return string
@@ -25,6 +27,24 @@ class OrderReference implements XmlSerializable
     public function setId(string $id): OrderReference
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getIssueDate(): ?DateTime
+    {
+        return $this->issueDate;
+    }
+
+    /**
+     * @param DateTime $issueDate
+     * @return OrderReference
+     */
+    public function setIssueDate(DateTime $issueDate): OrderReference
+    {
+        $this->issueDate = $issueDate;
         return $this;
     }
 
@@ -59,6 +79,11 @@ class OrderReference implements XmlSerializable
         }
         if ($this->salesOrderId !== null) {
             $writer->write([ Schema::CBC . 'SalesOrderID' => $this->salesOrderId ]);
+        }
+        if ($this->issueDate !== null) {
+            $writer->write([
+                Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
+            ]);
         }
     }
 }
