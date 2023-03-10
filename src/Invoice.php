@@ -439,18 +439,18 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @return BillingReference
+     * @return $billingReference[]
      */
-    public function getBillingReference(): ?BillingReference
+    public function getBillingReference(): ?array
     {
         return $this->billingReference;
     }
 
     /**
-     * @param BillingReference $billingReference
+     * @param $billingReference[] $billingReference
      * @return Invoice
      */
-    public function setBillingReference(BillingReference $billingReference): Invoice
+    public function setBillingReference(array $billingReference): Invoice
     {
         $this->billingReference = $billingReference;
         return $this;
@@ -622,11 +622,12 @@ class Invoice implements XmlSerializable
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
             ]);
         }
-
-        if ($this->billingReference != null) {
-            $writer->write([
-                Schema::CAC . 'BillingReference' => $this->billingReference
-            ]);
+        foreach ($this->billingReference as $billingReference) {
+            if ($billingReference != null) {
+                $writer->write([
+                    Schema::CAC . 'BillingReference' => $billingReference
+                ]);
+            }
         }
 
         if ($this->contractDocumentReference !== null) {
@@ -640,6 +641,7 @@ class Invoice implements XmlSerializable
                 Schema::CAC . 'OrderReference' => $this->orderReference
             ]);
         }
+        if($this->additionalDocumentReferenceLines)
         foreach ($this->additionalDocumentReferenceLines as $additionalDocumentReference) {
             if ($additionalDocumentReference !== null) {
                 $writer->write([

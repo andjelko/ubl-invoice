@@ -4,6 +4,7 @@ namespace NumNum\UBL\Tests;
 
 use NumNum\UBL\BillingReference;
 use NumNum\UBL\ContractDocumentReference;
+use NumNum\UBL\InvoiceDocumentReference;
 use NumNum\UBL\InvoiceTypeCode;
 use PHPUnit\Framework\TestCase;
 
@@ -93,8 +94,19 @@ class SimpleCreditNoteTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        $billingReference = (new BillingReference())
-            ->setId('123/test');
+        $invoiceDocumentReference = (new InvoiceDocumentReference())
+            ->setId('123/test')
+            ->setIssueDate(new \DateTime());
+
+        $invoiceDocumentReference2 = (new InvoiceDocumentReference())
+            ->setId('3432/test')
+            ->setIssueDate(new \DateTime());
+
+        $billingReference[] = (new BillingReference())
+            ->setInvoiceDocumentReference($invoiceDocumentReference);
+
+        $billingReference[] = (new BillingReference())
+            ->setInvoiceDocumentReference($invoiceDocumentReference2);
 
         $contractDocumentReference = (new ContractDocumentReference())
             ->setId('555/test');

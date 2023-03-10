@@ -7,23 +7,23 @@ use Sabre\Xml\XmlSerializable;
 
 class BillingReference implements XmlSerializable
 {
-    private $id;
+    private $invoiceDocumentReference;
 
     /**
-     * @return string
+     * @return invoiceDocumentReference
      */
-    public function getId(): string
+    public function getInvoiceDocumentReference(): ?invoiceDocumentReference
     {
-        return $this->id;
+        return $this->invoiceDocumentReference;
     }
 
     /**
-     * @param string $id
+     * @param invoiceDocumentReference $invoiceDocumentReference
      * @return BillingReference
      */
-    public function setId(string $id): BillingReference
+    public function setInvoiceDocumentReference(invoiceDocumentReference $invoiceDocumentReference): BillingReference
     {
-        $this->id = $id;
+        $this->invoiceDocumentReference = $invoiceDocumentReference;
         return $this;
     }
 
@@ -35,8 +35,10 @@ class BillingReference implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
-        if ($this->id !== null) {
-            $writer->write([ Schema::CAC . 'InvoiceDocumentReference' => [Schema::CBC . "ID" => $this->id]]);
+        if ($this->invoiceDocumentReference != null) {
+            $writer->write([
+                Schema::CAC . 'InvoiceDocumentReference' => $this->invoiceDocumentReference
+            ]);
         }
     }
 }
