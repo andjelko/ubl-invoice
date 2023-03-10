@@ -622,6 +622,8 @@ class Invoice implements XmlSerializable
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
             ]);
         }
+
+        if ($this->billingReference != null)
         foreach ($this->billingReference as $billingReference) {
             if ($billingReference != null) {
                 $writer->write([
