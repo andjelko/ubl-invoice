@@ -2,7 +2,13 @@
 
 namespace NumNum\UBL\Tests;
 
+use NumNum\UBL\ExtensionContent;
+use NumNum\UBL\InvoicedPrepaymentAmmount;
 use NumNum\UBL\InvoiceTypeCode;
+use NumNum\UBL\ReducedTotals;
+use NumNum\UBL\TaxTotal;
+use NumNum\UBL\UBLExtension;
+use NumNum\UBL\UBLExtensions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -87,9 +93,23 @@ class DueDateTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
+        $invoicePrepayment = (new InvoicedPrepaymentAmmount())
+            ->setId('2024-2')
+            ->setTaxTotal($taxTotal);
+        $reducedTotals = (new ReducedTotals())
+            ->setTaxTotal($taxTotal)
+            ->setLegalMonetaryTotal($legalMonetaryTotal);
+
+        $ublExt = (new UBLExtension())
+            ->addInvoicedPrepaymentAmmounts($invoicePrepayment)
+            ->addInvoicedPrepaymentAmmounts($invoicePrepayment)
+            ->setReducedTotals($reducedTotals);
+
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setUBLVersionID('2.2')
+            ->setUBLExtension($ublExt)
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())

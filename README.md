@@ -24,3 +24,6 @@ This repository does not have a documentation website at this moment. For now, p
 
 A changelog is available since version v1.9.0. If you are upgrading a minor version (1.x) or major version, please check the changelog to see if you need to implement any breaking changes...
 
+## Run tests
+
+php ./vendor/bin/phpunit

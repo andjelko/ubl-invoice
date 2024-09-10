@@ -10,6 +10,7 @@ use InvalidArgumentException;
 
 class Invoice implements XmlSerializable
 {
+    private $UBLExtension;
     private $UBLVersionID = '2.1';
     private $customizationID = '1.0';
     private $id;
@@ -37,6 +38,24 @@ class Invoice implements XmlSerializable
     private $delivery;
     private $orderReference;
     private $contractDocumentReference;
+
+    /**
+     * @return UBLExtension
+     */
+    public function getUBLExtension(): ?UBLExtension
+    {
+        return $this->UBLExtension;
+    }
+
+    /**
+     * @param UBLExtension $UBLExtension
+     * @return Invoice
+     */
+    public function setUBLExtension(UBLExtension $UBLExtension): Invoice
+    {
+        $this->UBLExtension = $UBLExtension;
+        return $this;
+    }
 
     /**
      * @return string
@@ -367,7 +386,7 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @return AdditionalDocumentReferenceLines[]
+     * @return AdditionalDocumentReference[]
      */
     public function getAdditionalDocumentReferenceLines(): ?array
     {
@@ -375,7 +394,7 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @param AdditionalDocumentReferenceLines[] $additionalDocumentReferenceLines
+     * @param AdditionalDocumentReference[] $additionalDocumentReferenceLines
      * @return Invoice
      */
     public function setAdditionalDocumentReferenceLines(array $additionalDocumentReferenceLines): Invoice
@@ -555,6 +574,18 @@ class Invoice implements XmlSerializable
     public function xmlSerialize(Writer $writer)
     {
         $this->validate();
+
+        if ($this->UBLExtension != null) {
+            $writer->write([
+                Schema::CEC . 'UBLExtensions' => [
+                    Schema::CEC . 'UBLExtension' => [
+                        Schema::CEC . 'ExtensionContent' => [
+                            Schema::SBT . 'SrbDtExt' =>$this->UBLExtension
+                        ]
+                    ]
+                ]
+            ]);
+        }
 
         $writer->write([
             Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
