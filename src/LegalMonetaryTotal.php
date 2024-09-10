@@ -130,6 +130,7 @@ class LegalMonetaryTotal implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
+        if(is_float($this->lineExtensionAmount))
         $writer->write([
             [
                 'name' => Schema::CBC . 'LineExtensionAmount',
@@ -138,7 +139,10 @@ class LegalMonetaryTotal implements XmlSerializable
                     'currencyID' => Generator::$currencyID
                 ]
 
-            ],
+            ]
+        ]);
+        if(is_float($this->taxExclusiveAmount))
+        $writer->write([
             [
                 'name' => Schema::CBC . 'TaxExclusiveAmount',
                 'value' => number_format($this->taxExclusiveAmount, 2, '.', ''),
@@ -146,7 +150,10 @@ class LegalMonetaryTotal implements XmlSerializable
                     'currencyID' => Generator::$currencyID
                 ]
 
-            ],
+            ]
+        ]);
+        if(is_float($this->taxInclusiveAmount))
+        $writer->write([
             [
                 'name' => Schema::CBC . 'TaxInclusiveAmount',
                 'value' => number_format($this->taxInclusiveAmount, 2, '.', ''),
@@ -154,7 +161,10 @@ class LegalMonetaryTotal implements XmlSerializable
                     'currencyID' => Generator::$currencyID
                 ]
 
-            ],
+            ]
+        ]);
+        if(is_float($this->allowanceTotalAmount))
+        $writer->write([
             [
                 'name' => Schema::CBC . 'AllowanceTotalAmount',
                 'value' => number_format($this->allowanceTotalAmount, 2, '.', ''),
@@ -162,14 +172,20 @@ class LegalMonetaryTotal implements XmlSerializable
                     'currencyID' => Generator::$currencyID
                 ]
 
-            ],
+            ]
+        ]);
+        if(is_float($this->prepaidAmount))
+        $writer->write([
             [
                 'name' => Schema::CBC . 'PrepaidAmount',
                 'value' => number_format($this->prepaidAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
-            ],
+            ]
+        ]);
+        if(is_float($this->payableAmount))
+        $writer->write([
             [
                 'name' => Schema::CBC . 'PayableAmount',
                 'value' => number_format($this->payableAmount, 2, '.', ''),
