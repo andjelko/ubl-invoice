@@ -37,6 +37,7 @@ class Invoice implements XmlSerializable
     private $billingReference;
     private $delivery;
     private $orderReference;
+    private $originatorDocumentReference;
     private $contractDocumentReference;
 
     /**
@@ -512,6 +513,16 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @param OriginatorDocumentReference $originatorDocumentReference
+     * @return OriginatorDocumentReference
+     */
+    public function setOriginatorDocumentReference(OriginatorDocumentReference $originatorDocumentReference): Invoice
+    {
+        $this->originatorDocumentReference = $originatorDocumentReference;
+        return $this;
+    }
+
+    /**
      * @return ContractDocumentReference
      */
     public function getContractDocumentReference(): ?ContractDocumentReference
@@ -672,6 +683,12 @@ class Invoice implements XmlSerializable
         if ($this->orderReference != null) {
             $writer->write([
                 Schema::CAC . 'OrderReference' => $this->orderReference
+            ]);
+        }
+
+        if ($this->originatorDocumentReference != null) {
+            $writer->write([
+                Schema::CAC . 'OriginatorDocumentReference' => $this->originatorDocumentReference
             ]);
         }
         if($this->additionalDocumentReferenceLines)
