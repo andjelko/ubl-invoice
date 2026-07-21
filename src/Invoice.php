@@ -674,12 +674,6 @@ class Invoice implements XmlSerializable
             }
         }
 
-        if ($this->contractDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC . 'ContractDocumentReference' => $this->contractDocumentReference,
-            ]);
-        }
-
         if ($this->orderReference != null) {
             $writer->write([
                 Schema::CAC . 'OrderReference' => $this->orderReference
@@ -691,6 +685,13 @@ class Invoice implements XmlSerializable
                 Schema::CAC . 'OriginatorDocumentReference' => $this->originatorDocumentReference
             ]);
         }
+
+        if ($this->contractDocumentReference !== null) {
+            $writer->write([
+                Schema::CAC . 'ContractDocumentReference' => $this->contractDocumentReference,
+            ]);
+        }
+
         if($this->additionalDocumentReferenceLines)
         foreach ($this->additionalDocumentReferenceLines as $additionalDocumentReference) {
             if ($additionalDocumentReference !== null) {
